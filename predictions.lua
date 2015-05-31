@@ -1,11 +1,17 @@
-local Predictions = { output2 = nil; predictions = {} }
+local Predictions = { output = nil; predictions = {} }
 
-function Predictions:init(net_output)
-  something = 'test'
-  self.output2 = net_output:float()
+function Predictions:new(o)
+  o = o or {}
+  setmetatable(o, self)
+  self.__index = self
+  print(o)
+  return o
+end
+
+function Predictions:init()
   local label = require 'overfeat_label'
-  for i=1,self.output2:size()[1] do
-    table.insert(self.predictions, {category_id=i, label=label[i], confidence=self.output2[i]})
+  for i=1,self.output:size()[1] do
+    table.insert(self.predictions, {category_id=i, label=label[i], confidence=self.output[i]})
   end
 end
 
