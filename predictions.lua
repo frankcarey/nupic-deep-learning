@@ -4,12 +4,13 @@ function Predictions:new(o)
   o = o or {}
   setmetatable(o, self)
   self.__index = self
-  print(o)
   return o
 end
 
 function Predictions:init()
   local label = require 'overfeat_label'
+  self.predictions = {}
+  self.output = output:float()
   for i=1,self.output:size()[1] do
     table.insert(self.predictions, {category_id=i, label=label[i], confidence=self.output[i]})
   end
