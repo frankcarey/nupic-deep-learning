@@ -12,7 +12,7 @@ ImgLoader = require 'ImgLoader'
 Predictions = require 'predictions'
 
 dirpath = "images-duck-n01846331/"
-limit = 20
+limit = 2000
 
 if not dirpath or not paths.dirp(dirpath) then
   print ("directory " .. dirpath or "?" .. " isn't set or doesn't exist, using test images.");
