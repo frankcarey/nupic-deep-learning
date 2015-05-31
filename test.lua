@@ -154,43 +154,17 @@ end
 -- close file pointer
 ParamBank:close()
 
-local label     = require 'overfeat_label'
-local filename = 'bee.jpg'
+-- PUT IMAGE STUFF BACK
+--
+ImgLoader = require 'ImgLoader'
+img_list = {
+  "lena",
+  "bee.jpg"
+}
 
-if cuda then net:cuda() end
-
--- load and preprocess image
-print('==> prepare an input image')
-local img_dim
-if network == 'small' then    dim = 231
-elseif network == 'big' then  dim = 221 end
---local img_raw = image.load(filename):mul(255)
-local img_raw = image.lena():mul(255)
-local rh = img_raw:size(2)
-local rw = img_raw:size(3)
-if rh < rw then
-   rw = math.floor(rw / rh * dim)
-   rh = dim
-else
-   rh = math.floor(rh / rw * dim)
-   rw = dim
+for key,file in pairs(img_list) do
+  img = ImgLoader:load(file);
 end
-local img_scale = image.scale(img_raw, rw, rh)
-
-local offsetx = 1
-local offsety = 1
-if rh < rw then
-   offsetx = offsetx + math.floor((rw-dim)/2)
-else
-   offsety = offsety + math.floor((rh-dim)/2)
-end
-img = img_scale[{{},{offsety,offsety+dim-1},{offsetx,offsetx+dim-1}}]:floor()
-
-
--- feedforward network
-print('==> feed the input image')
-timer = torch.Timer()
-img:add(-118.380948):div(61.896913)  -- fixed distn ~ N(118.380948, 61.896913^2)
 
 Predictions = require 'predictions'
 --itorch.image(img)
