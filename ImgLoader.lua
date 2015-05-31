@@ -1,9 +1,11 @@
 local  ImgLoader = {}
 require "image"
+require "paths"
 
 function ImgLoader:load(filepath)
   local img
   local img_raw
+
 
   -- Use cuda if out global was set.
   cuda = cuda or false
@@ -19,6 +21,9 @@ function ImgLoader:load(filepath)
     img_raw = image.lena():mul(255)
     print("loading image.lena()")
 
+  elseif not paths.filep(filepath) then
+    print("File not found: " .. filepath)
+    return nil
   else
     img_raw = image.load(filepath):mul(255)
   end
