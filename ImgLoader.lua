@@ -2,6 +2,15 @@ local  ImgLoader = {}
 require "image"
 require "paths"
 
+function ImgLoader:list_iter(t)
+  local i = 0
+  local n = table.getn(t)
+  return function ()
+    i = i + 1
+    if i <= n then return t[i] end
+  end
+end
+
 function ImgLoader:load(filepath)
   local img
   local img_raw

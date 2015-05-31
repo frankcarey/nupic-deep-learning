@@ -157,20 +157,28 @@ ParamBank:close()
 -- PUT IMAGE STUFF BACK
 --
 ImgLoader = require 'ImgLoader'
-img_list = {
-  "lena",
-  "bee.jpg"
-}
+Predictions = require 'predictions'
 
-for key,file in pairs(img_list) do
-  img = ImgLoader:load(file);
+dirpath = "images"
+
+if not dirpath or not paths.dirp(dirpath) then
+  print ("directory " .. dirpath or "?" .. " isn't set or doesn't exist, using test images.");
+  img_list = ImgLoader:list_iter({
+    "lena",
+    "bee.jpg"
+  })
+else
+  -- Iternate over all images in a path
+  img_list = paths.files(dirpath)
 end
 
-Predictions = require 'predictions'
---itorch.image(img)
-output = net:forward(img)
-pred_a = Predictions:new{output = output}
-pred_a:init()
-pred_a:sort()
-print(pred_a:getN(3))
-
+for file in img_list do
+  img = ImgLoader:load(file);
+  break
+  --itorch.image(img)
+  output = net:forward(img)
+  pred_a = Predictions:new{output = output}
+  pred_a:init()
+  pred_a:sort()
+  print(pred_a:getN(3))
+end
